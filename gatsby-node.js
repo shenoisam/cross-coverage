@@ -1,5 +1,6 @@
 // gatsby-node.js
 const AWS = require("aws-sdk")
+const stringify = require("safe-stable-stringify");
 
 exports.sourceNodes = async ({
   actions,
@@ -7,7 +8,7 @@ exports.sourceNodes = async ({
   createContentDigest,
 }) => {
    const { createNode } = actions
-   const s3 = new AWS.S3({ region: "us-east-1", credentials: {
+   const s3 = new AWS.S3({ logger: undefined,region: "us-east-1", credentials: {
             accessKeyId: process.env.AWS_ACCESS_KEY_ID,
             secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
           }})

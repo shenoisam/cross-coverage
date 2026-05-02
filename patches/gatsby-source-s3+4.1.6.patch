@@ -1,0 +1,20 @@
+diff --git a/node_modules/gatsby-source-s3/dist/gatsby-node.js b/node_modules/gatsby-source-s3/dist/gatsby-node.js
+index 2b0b369..013e936 100644
+--- a/node_modules/gatsby-source-s3/dist/gatsby-node.js
++++ b/node_modules/gatsby-source-s3/dist/gatsby-node.js
+@@ -1,5 +1,5 @@
+ "use strict";
+-
++const stringify = require("safe-stable-stringify");
+ exports.__esModule = true;
+ exports.sourceNodes = exports.onCreateNode = exports.createSchemaCustomization = void 0;
+ var _gatsbySourceFilesystem = require("gatsby-source-filesystem");
+@@ -23,7 +23,7 @@ const sourceNodes = async function ({
+ 
+   // configure aws
+   const s3 = new _clientS.S3Client(awsConfig);
+-  reporter.verbose(`AWS S3 Config: ${JSON.stringify(s3.config, undefined, 2)}`);
++  reporter.verbose(`AWS S3 Config: ${stringify(s3.config, undefined, 2)}`);
+   const listAllS3Objects = async bucket => {
+     const allS3Objects = [];
+     try {
