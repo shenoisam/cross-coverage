@@ -25,7 +25,7 @@ const data = {
           },
           region: 'us-east-2',
         },
-        buckets: ["s3://crosscoverage"],
+        buckets: ["crosscoverage"],
         expiration: 120,
       },
     }
