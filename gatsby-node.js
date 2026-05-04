@@ -9,8 +9,8 @@ exports.sourceNodes = async ({
 }) => {
    const { createNode } = actions
    const s3 = new AWS.S3({ logger: undefined,region: "us-east-1", credentials: {
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            accessKeyId: process.env.MY_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.MY_AWS_SECRET_ACCESS_KEY,
           }})
     const res = await s3.listObjectsV2({
         Bucket: "crosscoverage",
