@@ -5,6 +5,7 @@ import { useEffect, useState} from "react";
 import ListItem from "@mui/material/ListItem";
 import Button from "@mui/material/Button";
 import { useStaticQuery, graphql } from "gatsby"
+import { height } from "@mui/system";
 
 
 // Arrow function (common and often preferred)
@@ -14,7 +15,7 @@ const CrosswordGrid = (props) => {
     const [downClues, setDownClues] = useState([])
     const [data,setData] = useState({})
 
-    const black_out_color = "grey"
+    const black_out_color = "black"
     useEffect(() => {
         //Load the puzzle that was selected
         setData(props.crossword)
@@ -133,62 +134,71 @@ const CrosswordGrid = (props) => {
     }
   return (
     <>
-      <Box sx={{ flexGrow: 1, p: 2 }}>
-      <Grid
-        container
-        sx={{
-          '--Grid-borderWidth': '1px',
-          borderTop: 'var(--Grid-borderWidth) solid',
-          borderLeft: 'var(--Grid-borderWidth) solid',
-          borderColor: 'divider',
-          '& > div': {
-            borderRight: 'var(--Grid-borderWidth) solid',
-            borderBottom: 'var(--Grid-borderWidth) solid',
+      <Box sx={{  p: 2}}>
+        <Grid
+          container
+          sx={{
+            '--Grid-borderWidth': '1px',
+            borderTop: 'var(--Grid-borderWidth) solid',
+            borderLeft: 'var(--Grid-borderWidth) solid',
             borderColor: 'divider',
-          },
-        }}
-        columns={gsize}
-      >
-        {[...Array(gsize*gsize)].map((_, index) => (
-          <Grid
-            style={{backgroundColor:black_out_color}}
-            key={index}
-            id={index}
-            minHeight={50}
-            size={{
-              xs: 1,
-            }}
-            onClick={() => {handleClick(index)}}
-          >
-            <div className="contain" >
-              <span className="num" style={{ position: 'relative', top: '-0.5em', fontSize: '80%', visibility:'hidden' }}>X</span>
-              <div className="text"  style={{textAlign:'center'}}></div>
-          </div>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+            '& > div': {
+              borderRight: 'var(--Grid-borderWidth) solid',
+              borderBottom: 'var(--Grid-borderWidth) solid',
+              borderColor: 'divider',
+            },
+          }}
+          columns={gsize}
+        >
+          {[...Array(gsize*gsize)].map((_, index) => (
+            <Grid
+              style={{backgroundColor:black_out_color}}
+              key={index}
+              id={index}
+              sx={{aspectRatio: '1 / 1', maxHeight:'50px'}}
+
+              size={{
+                xs: 1,
+              }}
+              onClick={() => {handleClick(index)}}
+            >
+              <div className="contain" >
+                <span className="num" style={{ position: 'relative', top: '-0.5em', fontSize: '80%', visibility:'hidden' }}>X</span>
+                <div className="text"  style={{textAlign:'center'}}></div>
+            </div>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+
     <Button onClick={solve}>Solve Puzzle</Button>
-    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-      <Grid size={6}>
-        <ListItem><h3 style={{color:"blue"}}>Across</h3></ListItem>
-        {acrossClues.map((e) =>{
-          return (<div key={e["num"]}>
-           <p>{e["num"]}:{e["clue"]}</p>
-          </div>)
-        })}
+    <Grid container rowSpacing={1}  columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{
+        maxHeight: '800px',     // Restricts the total height
+        overflowY: 'auto',      // Enables vertical scrolling
+        overflowX: 'hidden',    // Prevents horizontal layout breaking
+        paddingRight: '8px',     // Keeps scrollbar from overlapping content
 
-      </Grid>
-      <Grid size={6}>
-        <ListItem><h3 style={{color:"red"}} >Down</h3></ListItem>
-        {downClues.map((e) =>{
-          return (<div key={e["num"]}>
-           <p>{e["num"]}:{e["clue"]}</p>
-          </div>)
-        })}
 
-      </Grid>
+      }} >
+        <Grid size={6}>
+          <ListItem><h3 style={{color:"blue"}}>Across</h3></ListItem>
+          {acrossClues.map((e) =>{
+            return (<div key={e["num"]}>
+            <p>{e["num"]}:{e["clue"]}</p>
+            </div>)
+          })}
 
+        </Grid>
+        <Grid size={6} >
+          <ListItem><h3 style={{color:"red"}} >Down</h3></ListItem>
+          <span>
+            {downClues.map((e) =>{
+              return (<p key={e["num"]}>
+              {e["num"]}:{e["clue"]}
+              </p>)
+            })}
+          </span>
+        </Grid>
     </Grid>
     </>
 
