@@ -13,11 +13,11 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { navigate } from "gatsby"
+const pages = ['puzzles'];
 
-const pages = ['Products','Blog'];
 
-
-const MyAppBar = () => {
+const MyAppBar = (props) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -28,7 +28,8 @@ const MyAppBar = () => {
     setAnchorElUser(event.currentTarget);
   });
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (page) => {
+    navigate("/" + page )
     setAnchorElNav(null);
   };
 
@@ -45,7 +46,8 @@ const MyAppBar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
+
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -78,7 +80,7 @@ const MyAppBar = () => {
               sx={{ display: { xs: 'block', md: 'none' } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() =>handleCloseNavMenu(page)}>
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
               ))}
@@ -107,7 +109,7 @@ const MyAppBar = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => {handleCloseNavMenu(page)}}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}

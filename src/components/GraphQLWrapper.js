@@ -4,6 +4,7 @@ import CrosswordGrid from './CrosswordGrid'
 import { useEffect, useState} from "react";
 const Layout = ({ pageTitle, children }) => {
   const [puzzle,setPuzzle] = useState({})
+  const [puzzleName, setPuzzleName]= useState("")
 
   const data = useStaticQuery(graphql`
    query MyQuery {
@@ -24,7 +25,7 @@ const Layout = ({ pageTitle, children }) => {
 
   return (
     <div >
-      <header>{data.allMyS3Object.nodes[0].key}</header>
+      <header><h1 style ={{display: 'flex', justifyContent: 'center',alignItems: 'center'}}>Puzzle Name: {puzzleName}</h1></header>
 
       <main>
         <CrosswordGrid crossword={puzzle}></CrosswordGrid>

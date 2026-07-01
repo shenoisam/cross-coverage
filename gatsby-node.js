@@ -1,6 +1,7 @@
 // gatsby-node.js
 const AWS = require("aws-sdk")
 const stringify = require("safe-stable-stringify");
+const path = require("path")
 
 exports.sourceNodes = async ({
   actions,
@@ -16,7 +17,7 @@ exports.sourceNodes = async ({
         Bucket: "crosscoverage",
     }).promise()
 
-   for (const obj of res.Contents) {
+
         res.Contents.forEach(async obj => {
             const file = await s3.getObject({
               Bucket: "crosscoverage",
@@ -37,7 +38,7 @@ exports.sourceNodes = async ({
             })
         })
     }
-}
+
 exports.createSchemaCustomization = ({ actions }) => {
   actions.createTypes(`
     type MyS3Object implements Node {
@@ -47,3 +48,33 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
   `)
 }
+exports.createPages = async ({ actions, graphql }) => {
+  const { createPage } = actions;
+
+  // Example: Fetching data to generate individual blog posts
+  const result = await graphql(`
+   query MyQuery {
+      allMyS3Object {
+        nodes {
+          key
+          content
+        }
+      }
+    }
+  `);
+  const CrosswordPuzzle = path.resolve(`./src/templates/crosswordpuzzle.js`)
+  console.log(CrosswordPuzzle)
+  result.data.allMyS3Object.nodes.forEach(node => {
+
+
+    createPage({
+      path: `/puzzles/${node.key.replace(/\.json$/, "")}`,
+      component: CrosswordPuzzle,
+      context: {
+        // This 'id' key automatically becomes a $id variable in your template query
+        id: node.key,
+        content: node.content
+      },
+    });
+  });
+};
