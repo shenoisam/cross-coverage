@@ -1,14 +1,18 @@
 import * as React from "react"
 import CrosswordGrid from "../components/CrosswordGrid"
 import MyAppBar from "../components/MyAppBar"
-import Layout from "../components/GraphQLWrapper"
 
+import a from "../components/outfile"
 const IndexPage = () => {
 
   return (
   <main>
     <MyAppBar></MyAppBar>
-    <Layout></Layout>
+    <header><h1 style ={{display: 'flex', justifyContent: 'center',alignItems: 'center'}}>Puzzle Name: Medicine20-1</h1></header>
+
+
+    <CrosswordGrid crossword={a}></CrosswordGrid>
+
 
   </main>)
 }

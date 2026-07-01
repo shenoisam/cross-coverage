@@ -4,8 +4,7 @@ import Box from '@mui/material/Box';
 import { useEffect, useState} from "react";
 import ListItem from "@mui/material/ListItem";
 import Button from "@mui/material/Button";
-import { useStaticQuery, graphql } from "gatsby"
-import { height } from "@mui/system";
+
 
 
 // Arrow function (common and often preferred)
@@ -66,6 +65,7 @@ const CrosswordGrid = (props) => {
 
           }
           n.style.color =  w['isDown'] === 0 ? "blue" : "red"
+          return ""
 
         })
         across.sort((a, b) => a.num - b.num)
@@ -106,6 +106,7 @@ const CrosswordGrid = (props) => {
         const myElement = document.getElementById(params);
         if(myElement.querySelector('.contain').style.backgroundColor !== "black_out_color"){
             await waitingKeypress(myElement);
+            myElement.focus();
         }
 
     }

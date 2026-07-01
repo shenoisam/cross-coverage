@@ -30,9 +30,10 @@ const ListPuzzles = ({ pageTitle, children }) => {
       <main>
          {puzzles.map((puz) =>{
             return (
-                <p>
+              <p>
+                <Link to={'/puzzles/'+ puz.key.replace(/\.json$/, "")}>
                     {puz.key}
-
+                </Link>
                 </p>
             )
         })}
