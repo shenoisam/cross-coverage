@@ -1,9 +1,10 @@
-import * as React from "react"
+import React, {useRef} from "react"
 import Grid from "@mui/material/Grid"
 import Box from '@mui/material/Box';
 import { useEffect, useState} from "react";
 import ListItem from "@mui/material/ListItem";
 import Button from "@mui/material/Button";
+
 
 
 
@@ -13,6 +14,8 @@ const CrosswordGrid = (props) => {
     const [acrossClues, setAcrossClues] = useState([])
     const [downClues, setDownClues] = useState([])
     const [data,setData] = useState({})
+    const inputRef = useRef(null);
+    const [selectedCell, setSelectedCell] = useState(null);
 
     const black_out_color = "black"
     useEffect(() => {
@@ -102,31 +105,31 @@ const CrosswordGrid = (props) => {
     }
 
 
-    async function handleClick(params){
+    function handleClick(params){
         const myElement = document.getElementById(params);
+
         if(myElement.querySelector('.contain').style.backgroundColor !== "black_out_color"){
-            await waitingKeypress(myElement);
-            myElement.focus();
+
+          setSelectedCell(params);
+          inputRef.current.focus();
+          
+
+
+        }
+    }
+    function handleInput(e) {
+        if (selectedCell == null) return;
+
+        const value = e.target.value.toUpperCase();
+
+        if (/^[A-Z0-9]$/.test(value)) {
+            const cell = document.getElementById(selectedCell);
+            cell.querySelector(".text").textContent = value;
         }
 
+        e.target.value = "";
     }
-    function  waitingKeypress(elem) {
-        return new Promise((resolve) => {
-            document.addEventListener('keydown', onKeyHandler);
-            function onKeyHandler(e) {
-                if(isCharLetter(e.key) ){
-                    elem.querySelector('.text').textContent = e.key.toUpperCase();
-                    document.removeEventListener('keydown', onKeyHandler);
-                    resolve();
-                }else if(isNumeric(e.key)){
-                  elem.querySelector('.text').textContent = e.key;
-                  document.removeEventListener('keydown', onKeyHandler);
 
-                }
-
-            }
-        });
-    }
 
     function isCharLetter(str) {return str.length === 1 && str.match(/[a-z]/i);}
     function isNumeric(str) {
@@ -152,6 +155,7 @@ const CrosswordGrid = (props) => {
           columns={gsize}
         >
           {[...Array(gsize*gsize)].map((_, index) => (
+
             <Grid
               style={{backgroundColor:black_out_color}}
               key={index}
@@ -163,11 +167,15 @@ const CrosswordGrid = (props) => {
               }}
               onClick={() => {handleClick(index)}}
             >
+
               <div className="contain" >
                 <span className="num" style={{ position: 'relative', top: '-0.5em', fontSize: '80%', visibility:'hidden' }}>X</span>
-                <div className="text"  style={{textAlign:'center'}}></div>
+                <div className="text"  style={{textAlign:'center'}} >
+
+                </div>
             </div>
             </Grid>
+
           ))}
         </Grid>
       </Box>
@@ -201,6 +209,19 @@ const CrosswordGrid = (props) => {
           </span>
         </Grid>
     </Grid>
+    <input
+      ref={inputRef}
+      type="text"
+      style={{
+        position: "fixed",
+        left: "0",
+        top: "0",
+        width: "40px",
+        height: "40px",
+        opacity: 0.01,
+        zIndex: -1,
+      }}
+    />
     </>
 
       )
