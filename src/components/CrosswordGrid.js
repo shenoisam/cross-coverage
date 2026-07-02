@@ -112,7 +112,7 @@ const CrosswordGrid = (props) => {
 
           setSelectedCell(params);
           inputRef.current.focus();
-          
+
 
 
         }
@@ -221,6 +221,7 @@ const CrosswordGrid = (props) => {
         opacity: 0.01,
         zIndex: -1,
       }}
+      onInput={handleInput}
     />
     </>
 
